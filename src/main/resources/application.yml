@@ -7,7 +7,7 @@ spring:
     password: ${DB_PASSWORD:platform_password}
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     open-in-view: false
   sql:
     init:
