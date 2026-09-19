@@ -5,20 +5,37 @@ A production-oriented backend portfolio project for enterprise Java roles.
 ## Stack
 
 - Java 17 and Spring Boot 3
-- Spring Web, Spring Data JPA, Spring Security
+- Spring Web, Spring Data JPA, Spring Security, JWT
 - PostgreSQL
 - OpenAPI / Swagger UI
 - Docker and Docker Compose
 - JUnit 5, Maven, GitHub Actions, and CodeQL
 
-## First module: Customer API
+## Customer API and access roles
 
-The initial service provides a clean foundation for managing customers:
+| Endpoint | user | admin |
+| --- | --- | --- |
+| POST /api/auth/login | Public | Public |
+| GET /api/v1/customers | Allowed | Allowed |
+| GET /api/v1/customers/{id} | Allowed | Allowed |
+| POST /api/v1/customers | Forbidden | Allowed |
 
-- `GET /api/v1/customers`
-- `POST /api/v1/customers`
-- `GET /api/v1/customers/{id}`
-- `GET /actuator/health`
+Request a JWT:
+
+```bash
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"changeit-admin"}'
+```
+
+Use the returned token:
+
+```bash
+curl http://localhost:8080/api/v1/customers \
+  -H "Authorization: Bearer <access-token>"
+```
+
+For local development only, the demo accounts are `admin` / `changeit-admin` and `user` / `changeit-user`. Set `JWT_SECRET`, `ADMIN_PASSWORD`, and `USER_PASSWORD` to secure values in every deployed environment.
 
 ## Run locally
 
@@ -35,7 +52,7 @@ Then open:
 ## Architecture
 
 ```
-HTTP API -> Controller -> Service -> Repository -> PostgreSQL
+HTTP API -> JWT filter -> Controller -> Service -> Repository -> PostgreSQL
 ```
 
-The project is designed to grow into a modular enterprise platform with authentication, auditability, events, and operational observability.
+The project is designed to grow into a modular enterprise platform with auditability, events, and operational observability.
