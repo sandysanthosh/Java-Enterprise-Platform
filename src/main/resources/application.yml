@@ -24,3 +24,12 @@ management:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+app:
+  security:
+    jwt:
+      # Replace in every deployed environment with a base64-encoded 256-bit secret.
+      secret: ${JWT_SECRET:c2FuZHktc2FudG9zaC1kZXYtc2VjcmV0LWNoYW5nZS1iZWZvcmUtcHJvZHVjdGlvbi0xMjM0NTY3ODkw}
+      expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
+    demo-users:
+      admin-password: ${ADMIN_PASSWORD:changeit-admin}
+      user-password: ${USER_PASSWORD:changeit-user}
