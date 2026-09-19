@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:enterprise-platform;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+app:
+  security:
+    jwt:
+      secret: c2FuZHktc2FudG9zaC10ZXN0LXNlY3JldC1tdXN0LWJlLWF0LWxlYXN0LTMyaGFyYWN0ZXJzLWxvbmc=
+      expiration-minutes: 60
+    demo-users:
+      admin-password: admin-test-password
+      user-password: user-test-password
