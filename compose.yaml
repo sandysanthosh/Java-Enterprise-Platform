@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: enterprise_platform
+      POSTGRES_USER: platform_user
+      POSTGRES_PASSWORD: platform_password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U platform_user -d enterprise_platform"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  app:
+    build: .
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/enterprise_platform
+      DB_USERNAME: platform_user
+      DB_PASSWORD: platform_password
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
